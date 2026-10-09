@@ -60,7 +60,10 @@ export const env = {
   ...data,
   clientUrl: clientOrigins[0],
   clientOrigins,
-  isProduction: data.NODE_ENV === 'production',
+  // Vercel does not inject NODE_ENV into the runtime for zero-config Express
+  // projects, so detect a hosted deployment explicitly. This drives Secure/
+  // SameSite=None cookies and production-safe error responses.
+  isProduction: data.NODE_ENV === 'production' || Boolean(process.env.VERCEL),
   isTest: data.NODE_ENV === 'test',
   // Email is only considered configured when a real key + real sender are present.
   isEmailConfigured: Boolean(data.RESEND_API_KEY && !placeholderSender),
