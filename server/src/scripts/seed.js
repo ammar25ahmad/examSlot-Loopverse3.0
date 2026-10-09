@@ -207,7 +207,7 @@ async function seedEmailsForPending(student) {
       },
     }
   );
-  return `${env.CLIENT_URL}/set-password?token=${token}`;
+  return `${env.clientUrl}/set-password?token=${token}`;
 }
 
 async function run() {

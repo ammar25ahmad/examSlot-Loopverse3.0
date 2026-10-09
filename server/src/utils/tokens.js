@@ -1,4 +1,5 @@
 import crypto from 'node:crypto';
+import env from '../config/env.js';
 
 /** Generates a cryptographically secure opaque token (returned to the user). */
 export function generateToken(bytes = 32) {
@@ -20,7 +21,7 @@ export function safeCompare(a, b) {
 
 /** Builds a frontend link for a tokenised action (never logged). */
 export function buildFrontendLink(path, token) {
-  const base = (process.env.CLIENT_URL || '').replace(/\/$/, '');
+  const base = (env.clientUrl || '').replace(/\/$/, '');
   return `${base}${path}${path.includes('?') ? '&' : '?'}token=${encodeURIComponent(token)}`;
 }
 

@@ -7,7 +7,23 @@ const schema = z.object({
   MONGODB_URI: z.string().min(1, 'MONGODB_URI is required'),
   JWT_SECRET: z.string().min(16, 'JWT_SECRET must be at least 16 characters'),
   JWT_EXPIRES_IN: z.string().default('2h'),
-  CLIENT_URL: z.string().url('CLIENT_URL must be a valid URL'),
+  CLIENT_URL: z
+    .string()
+    .min(1, 'CLIENT_URL is required')
+    .refine(
+      (value) =>
+        value.split(',').every((part) => {
+          const origin = part.trim();
+          if (!origin) return false;
+          try {
+            new URL(origin);
+            return true;
+          } catch {
+            return false;
+          }
+        }),
+      'CLIENT_URL must be a comma-separated list of valid URLs (e.g. https://example.com)'
+    ),
   UNIVERSITY_TIMEZONE: z.string().default('Asia/Karachi'),
   DEFAULT_EXAM_DURATION_MINUTES: z.coerce.number().int().positive().default(180),
   RESEND_API_KEY: z.string().optional().default(''),
@@ -36,8 +52,14 @@ const data = parsed.data;
 const placeholderSender =
   !data.RESEND_FROM_EMAIL || data.RESEND_FROM_EMAIL.includes('your-verified-domain');
 
+// Origins allowed by CORS (comma-separated CLIENT_URL). `clientUrl` is the
+// primary frontend origin used to build links in emails/token flows.
+const clientOrigins = data.CLIENT_URL.split(',').map((part) => new URL(part.trim()).origin);
+
 export const env = {
   ...data,
+  clientUrl: clientOrigins[0],
+  clientOrigins,
   isProduction: data.NODE_ENV === 'production',
   isTest: data.NODE_ENV === 'test',
   // Email is only considered configured when a real key + real sender are present.

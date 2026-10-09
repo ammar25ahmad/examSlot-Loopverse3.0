@@ -59,6 +59,28 @@ export async function connectDatabase(uri = env.MONGODB_URI) {
   return mongoose.connection;
 }
 
+/**
+ * Serverless-safe connection guard. In production the app is served by a
+ * single function instance that imports `app.js` directly (no `server.js`
+ * startup), so the connection is established lazily on the first request and
+ * cached on `globalThis` to be reused across invocations of the same instance.
+ */
+export async function ensureDatabase() {
+  if (mongoose.connection.readyState === 1) return mongoose.connection;
+
+  const cache = globalThis.__examslotDbConnection;
+  if (cache) return cache;
+
+  const promise = connectDatabase().catch((err) => {
+    if (globalThis.__examslotDbConnection === promise) {
+      globalThis.__examslotDbConnection = null;
+    }
+    throw err;
+  });
+  globalThis.__examslotDbConnection = promise;
+  return promise;
+}
+
 export async function disconnectDatabase() {
   await mongoose.disconnect();
 }

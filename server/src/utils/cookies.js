@@ -6,7 +6,10 @@ export const CSRF_COOKIE = 'examslot_csrf';
 export const CSRF_HEADER = 'x-csrf-token';
 
 const baseCookieOptions = {
-  sameSite: 'lax',
+  // Production serves the frontend and API on different sites
+  // (e.g. netlify.app → vercel.app), so cookies must be SameSite=None to be
+  // sent with cross-site XHR. `secure` (required with None) is on in production.
+  sameSite: env.isProduction ? 'none' : 'lax',
   secure: env.isProduction,
   path: '/',
 };

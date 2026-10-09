@@ -1,3 +1,5 @@
+import env from '../config/env.js';
+
 const BRAND = {
   navy: '#0b1220',
   navySoft: '#131c31',
@@ -129,7 +131,7 @@ export function requestReviewedEmail({ student, request, approved, remark }) {
       intro: `Hi ${student.fullName.split(' ')[0]}, an administrator has reviewed your ${typeText} request.`,
       body,
       ctaLabel: 'Open ExamSlot',
-      ctaUrl: `${(process.env.CLIENT_URL || '').replace(/\/$/, '')}/login`,
+      ctaUrl: `${(env.clientUrl || '').replace(/\/$/, '')}/login`,
     }),
     text: `Your ExamSlot ${typeText} request was ${statusText}. ${remark ? `Remark: ${remark}` : ''}`,
   };
