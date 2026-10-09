@@ -1,0 +1,31 @@
+# dependencies
+node_modules/
+bun.lockb
+bun.lock
+
+# env & secrets
+.env
+.env.local
+*.local
+
+# builds
+dist/
+build/
+client/dist/
+
+# logs
+*.log
+npm-debug.log*
+logs/
+
+# editor / os
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# uploads
+server/uploads/
+
+# test output
+coverage/

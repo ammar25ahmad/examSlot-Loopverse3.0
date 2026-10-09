@@ -1,0 +1,14 @@
+{
+  "name": "examslot",
+  "private": true,
+  "version": "1.0.0",
+  "description": "ExamSlot — self-service exam date sheet management platform for a multi-branch virtual university.",
+  "scripts": {
+    "install:all": "bun install --cwd server && bun install --cwd client",
+    "dev:server": "bun run --cwd server dev",
+    "dev:client": "bun run --cwd client dev",
+    "seed": "bun run --cwd server seed",
+    "test": "bun run --cwd server test",
+    "build": "bun run --cwd client build"
+  }
+}
