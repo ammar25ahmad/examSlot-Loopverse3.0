@@ -137,7 +137,7 @@ The seed also creates **3 branches, 8 courses, 24 exam slots, and 5 students**.
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
-| `VITE_API_URL` | `http://localhost:5000/api` | Backend API base URL |
+| `VITE_API_URL` | `https://exam-slot-loopverse3-0.vercel.app/api` | Backend API base URL |
 
 ---
 
