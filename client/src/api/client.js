@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = import.meta.env.VITE_API_URL || 'https://examslot-frontend.netlify.app/api';
+const baseURL = import.meta.env.VITE_API_URL || 'https://exam-slot-loopverse3-0-9vautgpt3-ammar-ahmads-projects-67f802df/api';
 export { baseURL };
 
 export const api = axios.create({
